@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // Props 타입 정의
 type CodeEditorProps = {
-    setOutput: (output: string) => void; // setOutput prop의 타입 정의
+    setOutput: (output: string) => void; // sRetOutput prop의 타입 정의
     language: string;
 }
 
@@ -57,9 +57,6 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
 
             {/* Output Section */}
             <Box w="30%" p={4} bg="gray.800">
-                <Text fontSize="lg" mb={4} color="white">
-                    Output
-                </Text>
                 <Box bg="gray.700" p={2} borderRadius="md">
                     <Text color="white">{output}</Text>
                 </Box>
