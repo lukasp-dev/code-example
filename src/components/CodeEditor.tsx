@@ -28,38 +28,57 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState<string>("javascript");
+  const [showRecommend, setShowRecommend] = useState<boolean>(false);
 
-  const runCode = () => {
-    setLoading(true);
-    setError(null);
+  // const runCode = () => {
+  //   setLoading(true);
+  //   setError(null);
+  //   setShowRecommend(false);
 
-    axios
-      .post<{ output: string }>("/execute-code", {
-        code: code,
-        language: language, // props에서 받아온 language 사용
-      })
-      .then((response) => {
-        setOutputState(response.data.output); // 상태 업데이트
-        setOutput(response.data.output); // 부모 컴포넌트의 setOutput 호출
-      })
-      .catch((err) => {
-        setError("Error executing code: " + err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  //   axios
+  //     .post<{ output: string }>("/execute-code", {
+  //       code: code,
+  //       language: language, // props에서 받아온 language 사용
+  //     })
+  //     .then((response) => {
+  //       setOutputState(response.data.output); // 상태 업데이트
+  //       setOutput(response.data.output); // 부모 컴포넌트의 setOutput 호출
+  //       setShowRecommend(true); // Recommend 섹션 호출
+  //     })
+  //     .catch((err) => {
+  //       setError("Error executing code: " + err.message);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
 
   const resetCode = () => {
     setCode("// 코드 추가");
     setOutputState("");
     setError(null);
+    setShowRecommend(false);
+  };
+
+  const runCode = () => {
+    setLoading(true);
+    setError(null);
+    setShowRecommend(false);
+
+    // API 없이 처리(예시)
+    setTimeout(() => {
+      const fakeOutput = `Executed: ${code}`;
+      setOutputState(fakeOutput);
+      setOutput(fakeOutput);
+      setShowRecommend(true); // Recommend 섹션 표시
+      setLoading(false);
+    }, 1000);
   };
 
   return (
     <Flex direction="row" h="100vh">
       {/* Code Editor Section */}
-      <Box w="70%" p={4} bg="gray.900">
+      <Box flex="2" p={4} bg="gray.900">
         <Editor
           width="100%"
           height="100%"
@@ -75,7 +94,7 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
       </Box>
 
       {/* Output Section */}
-      <Box w="30%" p={4} bg="gray.800">
+      <Box flex="1" p={4} bg="gray.800">
         <Box bg="gray.700" p={2} borderRadius="md">
           <Text color="white">{output}</Text>
         </Box>
@@ -115,6 +134,17 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
             ))}
           </MenuList>
         </Menu>
+        {/* Recommend Section */}
+        {showRecommend && (
+          <Box w="100%" h="50%" p={4} mt={4} bg="white">
+            <Text>Recommend Contents</Text>
+            <a>Link1</a>
+            <br />
+            <a>Link2</a>
+            <br />
+            <a>Link3</a>
+          </Box>
+        )}
       </Box>
     </Flex>
   );
